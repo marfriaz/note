@@ -2,22 +2,18 @@
 
 ## Description
 
-I built a Fullstack Application to add new entries to my Notion “Netflix Shows” database. The database includes 3 columns: Title, Seen and Description. The app was built using React.js for the Web-Client and Node.js for the Web-Server. The app works as:
+I built a Fullstack Application to add new entries to my Notion “Netflix Shows” database. The database includes 3 columns: Title, Seen and Description. The app was built using React.js for the Web-Client and Node.js for the Web-Server. The server was created to not only support my database, but any database that only has "text" columns- the database ID and AuthToken may be changed from the ./config file. Future iterations of this app may include supporting additional data types and allowing users to add their database id and AuthToken from the Web-UI. The app works as:
 
-1. Web client makes GET or POST request to server
-
-   - GET request made when application is started to attain title and columns of database
-   - POST request made when user submits a Form holding a database entry from the Web-Client
-
-2. Server interprets the HTTP request using the Express framework: the request is routed to the correct handler. Server makes an Axios request to the Notion API to perform database transaction.
-
-- GET request: /databases/database_id. Returns database title and columns, which the client uses to create form so that the user can create entries
-- POST request: /pages. User submits Form on Web UI and server standardizes the request body to match Notion's api /pages requirements. The standardized body is sent in the Axios request to the Notion API
-
-3. A response is sent back to the client
-
-- If successful: Response is interpreted by UI: Creates form (GET request) or confirms database entry was successful (POST request)
-- If unsuccessful: Error status and message is displayed to the user
+1. App is started and Web client makes GET to server to attain the title and columns of database. Server interprets the HTTP request using the Express framework: the request is routed to the correct handler.
+2. Server makes an Axios request to the API Notion API to perform database transaction (GET request: /databases/database_id). Server sends response (database title and columns or error)
+   - If successful, Web-Client creates a Form composed of the database title and columns
+   - If unsuccessful Error status and message is displayed to the user
+3. User fills out form and hits submit button.
+   - Web-client send request body to server
+   - Server standardizes the request body to match Notion's api /pages requirements. The standardized body is used in the Axios request to the Notion API
+4. Server makes an Axios request to the API Notion API to perform database transaction (POST request: /pages). Server sends response (success message or error)
+   - If successful, Web-Client displays success message for 5 seconds and clears form
+   - If unsuccessful: Error status and message is displayed to the user
 
 Youtube Demo (Notion not mentioned): https://www.youtube.com/watch?v=jpGbF5gSTqs&ab_channel=MarcoFriaz
 
