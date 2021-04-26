@@ -1,15 +1,17 @@
 {
-  "name": "food-truck-finder",
+  "name": "notion-take-home-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js"
-  },
-  "bin": {
-    "show-open-food-trucks": "./src/index.js"
+    "start": "node src/server.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
 }

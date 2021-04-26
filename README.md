@@ -1,4 +1,25 @@
-# Food-truck-finder
+# Notion Take-Home Server
+
+## Description
+
+I built a Fullstack Application to add new entries to my Notion “Netflix Shows” database. The database includes 3 columns: Title, Seen and Description. The app was built using React.js for the Web-Client and Node.js for the Web-Server. The app works as:
+
+1. Web client makes GET or POST request to server
+
+   - GET request made when application is started to attain title and columns of database
+   - POST request made when user submits a Form holding a database entry from the Web-Client
+
+2. Server interprets the HTTP request using the Express framework: the request is routed to the correct handler. Server makes an Axios request to the Notion API to perform database transaction.
+
+- GET request: /databases/database_id. Returns database title and columns, which the client uses to create form so that the user can create entries
+- POST request: /pages. User submits Form on Web UI and server standardizes the request body to match Notion's api /pages requirements. The standardized body is sent in the Axios request to the Notion API
+
+3. A response is sent back to the client
+
+- If successful: Response is interpreted by UI: Creates form (GET request) or confirms database entry was successful (POST request)
+- If unsuccessful: Error status and message is displayed to the user
+
+Youtube Demo (Notion not mentioned): https://www.youtube.com/watch?v=jpGbF5gSTqs&ab_channel=MarcoFriaz
 
 ## Prereqs
 
@@ -9,33 +30,38 @@ Please ensure you have the latest version of Node downloaded.
 
 ## Setup
 
-1. From terminal, cd into food-truck-finder directory
-2. Install dependencies (npm install)
-3. Run program
+1. Setup Web-Server:
 
-- If you have admin priveldges:
+   1. From terminal, cd into notion-take-home-server directory
+   2. Install dependencies (npm install)
+   3. Run the server by running 'npm start'.
 
-  1. Within project directory, run 'npm link'
-  2. From terminal run 'show-open-food-trucks'. Click enter to continue. Press 'ctrl + c' to quit
-  3. When finished, from project directory, run 'npm unlink'
+2. Set up Web-Client:
 
-- If you have do not have admin priveldges:
-  1. Within directory, run 'npm start'. Click enter to continue. Press 'ctrl + c' to quit
+   1. From terminal, cd into notion-take-home-client directory
+   2. Install dependencies (npm install)
+   3. Run the client by running 'npm start'. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## Write Up
+3. Fill out form and click "submit" button
 
-I would take this command line app and convert it to a fully featured web app by adding:
+## Questions
 
-New Features:
+1. Was there anything you got stuck on, and if so what did you do to resolve it?
+   - I originally had only made a Web UI, and faced CORS issues making requests to Notion’s API. After getting a clarification from the assignment instructions to create a web server, I created my Web-Server and included CORs middleware to add the “Access-Control-Allow-Origin” to my response header, allowing my client to make requests to my server.
+2. Do you have any suggestions for improving the API documentation to make it clearer or easier to use?
+   - Initially, I thought I was going to use the “databases” endpoint for my GET and POST requests, but after reading into the API docs it was clear that the “pages” endpoint would be used for my POST request. This was also clarified in the “Database object” page clarifying that Pages are the 'rows' of the database. For a user that is not very familiar with Notion’s naming conventions, the idea that “Databases live inside pages. A Database is a bunch of pages” may confuse a developer when determining which endpoint to use. I would suggestion adding this as a clarification in the database and pages docs.
+   - Rest of docs were great and extremely detailed!
+3. A list of links to any major sources you relied on
+   - Express Documentation: https://expressjs.com/en/guide/routing.html
+4. A list of major open-source libraries you chose to use
 
-- A frontend UI, that supports an an infinite scroll feature where users are fed more content until the end of open food trucks is met. Once the frontend detects the user is nearing the bottom of the page, an asynchronous request is made to the server to load more food trucks and the response data is inserted into the DOM when made available.
-- Support ability to change day of the week and time of the day, instead of depending on system date. These parameters would be selected from the frontend UI, and the server would modify the queryParams object in the FoodTruckFinder.js file.
-- Add Google Maps feature to frontend UI. The Socrates API has longitude and longitude data for each food truck which could be used in the Google Maps API to give the user a visualization of food trucks in SF or even around the user, if we used the user’s location data.
-- Add types of food the trucks serve using the Optionaltext column. User can also be given the option to filter by types of food.
-- Add better error handling messages that provide actionable insight to the user.
+- Web-Server:
 
-To Scale:
+  - Axios for networking
+  - Express node framework to interpret HTTP requests and send HTTP responses
+  - CORS: Express middleware to enable CORS
 
-- Add caching such a Redis Cache to support quicker lookups.
-- Add load balancers to distribute requests to multiple servers.
-- For frontend, use external CSS and Javascript files instead of inline in our HTML documents so browser could cache static files.
+- Web-Client:
+  - Axios for networking
+  - [Create React App](https://github.com/facebook/create-react-app) for quickly boostrapping a React App with all configs
+  - React
